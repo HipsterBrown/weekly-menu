@@ -1,0 +1,23 @@
+{
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "allowJs": true,
+    "lib": ["dom", "esnext"],
+    "sourceMap": true,
+    "jsx": "react",
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "declaration": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "target": "esnext"
+  }
+}
