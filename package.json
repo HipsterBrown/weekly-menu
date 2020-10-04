@@ -11,8 +11,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/pouchdb": "^6.4.0",
     "@types/react": "^16.9.50",
     "@types/react-dom": "^16.9.8",
+    "@types/react-router": "^5.1.8",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/yup": "^0.29.7",
     "parcel": "^2.0.0-beta.1",
     "typescript": "^4.0.3"
   },
@@ -23,7 +27,11 @@
     "date-fns": "^2.16.1",
     "emotion-theming": "^10.0.27",
     "formik": "^2.1.7",
+    "pouchdb": "^7.2.2",
     "react": "0.0.0-experimental-94c0244ba",
-    "react-dom": "0.0.0-experimental-94c0244ba"
+    "react-dom": "0.0.0-experimental-94c0244ba",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "yup": "^0.29.3"
   }
 }

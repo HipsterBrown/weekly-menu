@@ -2,6 +2,7 @@
   "include": ["src/**/*"],
   "compilerOptions": {
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "lib": ["dom", "esnext"],
     "sourceMap": true,
     "jsx": "react",
