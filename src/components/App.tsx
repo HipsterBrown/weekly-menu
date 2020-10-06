@@ -9,7 +9,14 @@ const App: React.FC = () => {
   return (
     <ThemeProvider>
       <CSSReset />
-      <Box p="3" border="8px solid" borderColor="pink.500" height="100vh">
+      <Box
+        p="3"
+        border="8px solid"
+        borderColor="pink.500"
+        height="100vh"
+        bg="white"
+        overflow="scroll"
+      >
         <Router>
           <Route path="/" exact component={IndexPage} />
           <Route path="/edit" component={EditPage} />

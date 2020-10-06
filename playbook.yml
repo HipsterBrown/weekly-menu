@@ -1,0 +1,81 @@
+---
+- hosts: all
+  vars:
+    couchdb_username: admin
+    couchdb_password: SuperSecret123
+  tasks:
+    - name: Install couchdb deps
+      apt:
+        pkg:
+          - gnupg
+          - ca-certificates
+        state: present
+    - name: Add couchdb key
+      apt_key:
+        keyserver: keyserver.ubuntu.com
+        id: 8756C4F765C9AC3CB6B85D62379CE192D401AB61
+        state: present
+    - name: Add couchdb source
+      apt_repository:
+        repo: deb https://apache.bintray.com/couchdb-deb bionic main
+        state: present
+        filename: couchdb
+    - name: Install couchdb
+      apt:
+        pkg: couchdb
+        update_cache: true
+    - name: Add admin to couchdb
+      shell: |
+        cat <<EOT >> /opt/couchdb/etc/local.d/10-admins.ini
+        [admins]
+        {{ couchdb_username|quote }} = {{ couchdb_password|quote }}
+        EOT
+      args:
+        creates: /opt/couchdb/etc/local.d/10-admins.ini
+    - name: Re-bind http interface for couchdb
+      shell: |
+        cat <<EOT >> /opt/couchdb/etc/local.d/10-httpd.ini
+        [chttpd]
+        port = 5984
+        bind_address = 0.0.0.0
+
+        [httpd]
+        bind_address = 0.0.0.0
+        enable_cors = true
+        EOT
+      args:
+        creates: /opt/couchdb/etc/local.d/10-httpd.ini
+    - name: Configure cors for couchdb
+      shell: |
+        cat <<EOT >> /opt/couchdb/etc/local.d/10-cors.ini
+        [cors]
+        origins = *
+        credentials = true
+        methods = GET,PUT,POST,HEAD,DELETE
+        headers = accept,authorization,content-type,origin,referer,x-csrf-token
+        EOT
+      args:
+        creates: /opt/couchdb/etc/local.d/10-cors.ini
+    - name: Create couchdb service
+      shell: |
+        cat <<EOT >> /etc/systemd/system/couchdb.service
+        [Unit]
+        Description=CouchDB service
+        After=network.target
+
+        [Service]
+        Type=simple
+        User=couchdb
+        ExecStart=/opt/couchdb/bin/couchdb -o /dev/stdout -e /dev/stderr
+        Restart=always
+        EOT
+      args:
+        creates: /etc/systemd/system/couchdb.service
+    - name: Reread systemd configs
+      systemd:
+        daemon_reload: yes
+    - name: Start and enable couchdb service
+      systemd:
+        name: couchdb
+        enabled: yes
+        state: started

@@ -55,6 +55,7 @@ const EditPage: React.FC = () => {
             variantColor="pink"
             width="100%"
             maxWidth={[null, "10rem"]}
+            mb="3"
           >
             Save
           </Button>
