@@ -11,10 +11,11 @@ import { useField, ErrorMessage } from "formik";
 interface InputGroupProps extends FormControlProps {
   name: string;
   label?: string;
+  type?: string;
 }
 
-const InputGroup: React.FC<InputGroupProps> = ({ name, label, ...styles }) => {
-  const [field, { error, touched }] = useField(name);
+const InputGroup: React.FC<InputGroupProps> = ({ name, label, type = 'text', ...styles }) => {
+  const [field, { error, touched }] = useField({ name, type });
 
   return (
     <FormControl isInvalid={!!error && touched} {...styles}>

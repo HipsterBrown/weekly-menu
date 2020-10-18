@@ -42,6 +42,7 @@
         [httpd]
         bind_address = 0.0.0.0
         enable_cors = true
+        require_valid_user = true
         EOT
       args:
         creates: /opt/couchdb/etc/local.d/10-httpd.ini

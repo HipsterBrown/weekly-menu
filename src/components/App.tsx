@@ -4,6 +4,7 @@ import { Route } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import IndexPage from "./IndexPage";
 import EditPage from "./EditPage";
+import LoginPage from "./LoginPage";
 
 const App: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         <Router>
           <Route path="/" exact component={IndexPage} />
           <Route path="/edit" component={EditPage} />
+          <Route path="/login" component={LoginPage} />
         </Router>
       </Box>
     </ThemeProvider>
