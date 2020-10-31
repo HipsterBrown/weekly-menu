@@ -1,11 +1,19 @@
 import React, { Suspense } from "react";
-import { Heading, Link, SimpleGrid, Skeleton, Text } from "@chakra-ui/core";
+import {
+  Box,
+  Heading,
+  Link,
+  SimpleGrid,
+  Skeleton,
+  Text
+} from "@chakra-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import { format } from "date-fns";
 import { useQueryDB } from "../db";
 import { getMenuDateFor } from "../utils";
 import SessionErrorBoundary from "./SessionErrorBoundary";
 import { createErrorBoundary } from "./NotFoundErrorBoundary";
+import NavBar from "./NavBar";
 import Menu from "./Menu";
 
 const MenuFallback: React.FC = () => (
@@ -38,19 +46,22 @@ const IndexPage: React.FC = () => {
 
   return (
     <>
-      <Heading mt="0" mb="4">
-        Weekly Menu - {currentWeek}
-      </Heading>
-      <NotFoundErrorBoundary>
-        <SessionErrorBoundary>
-          <Suspense fallback={<MenuLoader />}>
-            <Menu menu={menu} />
-            <Link color="teal.500" as={RouterLink} to="/edit" pb="4">
-              Edit
-            </Link>
-          </Suspense>
-        </SessionErrorBoundary>
-      </NotFoundErrorBoundary>
+      <NavBar />
+      <Box p="3">
+        <Heading mt="0" mb="4">
+          Weekly Menu - {currentWeek}
+        </Heading>
+        <NotFoundErrorBoundary>
+          <SessionErrorBoundary>
+            <Suspense fallback={<MenuLoader />}>
+              <Menu menu={menu} />
+              <Link color="teal.500" as={RouterLink} to="/edit" pb="4">
+                Edit
+              </Link>
+            </Suspense>
+          </SessionErrorBoundary>
+        </NotFoundErrorBoundary>
+      </Box>
     </>
   );
 };

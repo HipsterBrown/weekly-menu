@@ -29,7 +29,7 @@ const LoginPage: React.FC = () => {
   }, [session?.name]);
 
   return (
-    <SimpleGrid spacingY="3" maxWidth="600px" mx="auto">
+    <SimpleGrid spacingY="3" maxWidth="600px" mx="auto" p="3">
       <Heading>Login Page</Heading>
       {session?.name ? (
         <>

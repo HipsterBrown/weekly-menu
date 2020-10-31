@@ -5,13 +5,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 import IndexPage from "./IndexPage";
 import EditPage from "./EditPage";
 import LoginPage from "./LoginPage";
+import DisplayModePage from "./DisplayModePage";
 
 const App: React.FC = () => {
   return (
     <ThemeProvider>
       <CSSReset />
       <Box
-        p="3"
         border="8px solid"
         borderColor="pink.500"
         height="100vh"
@@ -20,6 +20,7 @@ const App: React.FC = () => {
       >
         <Router>
           <Route path="/" exact component={IndexPage} />
+          <Route path="/display-mode" component={DisplayModePage} />
           <Route path="/edit" component={EditPage} />
           <Route path="/login" component={LoginPage} />
         </Router>

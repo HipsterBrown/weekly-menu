@@ -85,6 +85,17 @@ export const useSession = () => {
     [remote]
   );
 
+  const logout = useCallback(async () => {
+    try {
+      setLoading(true);
+      await remote.logOut();
+    } catch (error) {
+      console.log({ error });
+    } finally {
+      setLoading(false);
+    }
+  }, [remote]);
+
   useEffect(() => {
     remote
       .getSession()
@@ -96,7 +107,7 @@ export const useSession = () => {
       });
   }, []);
 
-  return { loading, login, session };
+  return { loading, login, logout, session };
 };
 
 export const DAYS: Day[] = ["M", "T", "W", "Th", "F", "Sa", "Su"];

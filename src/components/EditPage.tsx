@@ -6,6 +6,7 @@ import { local, useQueryDB, Menu, MenuResource } from "../db";
 import { getMenuDateFor } from '../utils';
 import SessionErrorBoundary from "./SessionErrorBoundary";
 import { createErrorBoundary } from "./NotFoundErrorBoundary";
+import NavBar from './NavBar';
 import MenuForm from "./MenuForm";
 
 const BLANK_MENU: Menu = {
@@ -50,7 +51,9 @@ const EditPage: React.FC = () => {
   const onSubmit = useMenuUpdate(menuDate.toJSON());
 
   return (
-    <Box mx="auto" maxWidth="500px">
+    <>
+    <NavBar />
+    <Box mx="auto" maxWidth="500px" p="3">
       <Heading mt="0" mb="4">
         Edit Weekly Menu - {currentWeek}
       </Heading>
@@ -62,6 +65,7 @@ const EditPage: React.FC = () => {
         </SessionErrorBoundary>
       </NotFoundErrorBoundary>
     </Box>
+    </>
   );
 };
 
