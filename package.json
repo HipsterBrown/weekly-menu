@@ -2,7 +2,7 @@
   "name": "weekly-menu",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "browser": "_site/index.html",
   "scripts": {
     "build": "parcel build ./src/index.html",
     "start": "parcel serve ./src/index.html"
@@ -10,6 +10,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "targets": {
+    "browser": {
+      "distDir": "_site"
+    }
+  },
   "devDependencies": {
     "@types/pouchdb": "^6.4.0",
     "@types/react": "^16.9.50",
