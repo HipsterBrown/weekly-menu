@@ -1,5 +1,6 @@
 import React from "react";
-import { render } from "react-dom";
+// @ts-ignore
+import { unstable_createRoot as createRoot } from "react-dom";
 import App from "./components/App";
 
-render(<App />, document.getElementById("root"));
+createRoot(document.getElementById("root")).render(<App />);

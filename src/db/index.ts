@@ -1,6 +1,7 @@
 import PouchDB from "pouchdb";
 import PouchDBAuth from "pouchdb-authentication";
 import { useCallback, useState, useEffect } from "react";
+import { SessionError } from "../components/SessionErrorBoundary";
 
 PouchDB.plugin(PouchDBAuth);
 
@@ -19,30 +20,41 @@ export const local = new PouchDB<PouchDB.Core.Document<Menu>>("menus");
 
 local
   .sync(remote, { live: true, retry: true })
-  .on("error", console.log.bind(console));
+  .on("error", console.log.bind(console, "Sync error:"));
+
+export type MenuResource = {
+  read(): PouchDB.Core.ExistingDocument<Menu>;
+};
 
 export const useQueryDB = (id: string) => {
-  const [doc, setDoc] = useState<PouchDB.Core.ExistingDocument<Menu> | null>(
-    null
-  );
-  useEffect(() => {
-    local.get(id).then(setDoc);
-  }, [setDoc]);
-
-  useEffect(() => {
-    const listener = local.changes({
-      since: "now",
-      live: true,
-      include_docs: true,
-      doc_ids: [id]
+  let status: "pending" | "error" | "success" = "pending";
+  let result: PouchDB.Core.ExistingDocument<Menu> | Error | null = null;
+  const promise = remote
+    .getSession()
+    .then(response => {
+      if (response.userCtx.name === null) throw new SessionError();
+      return local.get(id);
+    })
+    .then(response => {
+      status = "success";
+      result = response;
+    })
+    .catch(error => {
+      status = "error";
+      result = error;
     });
-    listener.on("change", change => {
-      setDoc(change.doc);
-    });
-    return () => listener.cancel();
-  }, []);
-
-  return doc;
+  const read = (): PouchDB.Core.ExistingDocument<Menu> => {
+    switch (status) {
+      case "pending":
+        throw promise;
+      case "error":
+        throw result;
+      case "success": {
+        if (!(result instanceof Error) && result?._id) return result;
+      }
+    }
+  };
+  return { read };
 };
 
 export const useSession = () => {
