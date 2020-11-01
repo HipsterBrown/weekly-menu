@@ -23,4 +23,7 @@ server.get("/display-mode", (_req, reply) => reply.sendFile("index.html"));
 server.get("/edit", (_req, reply) => reply.sendFile("index.html"));
 server.get("/login", (_req, reply) => reply.sendFile("index.html"));
 
-server.listen(process.env.PORT || 3000);
+server.listen(
+  process.env.PORT || 3000,
+  process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1"
+);
