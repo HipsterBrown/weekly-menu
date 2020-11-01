@@ -2,19 +2,21 @@
   "name": "weekly-menu",
   "version": "1.0.0",
   "description": "",
-  "browser": "_site/index.html",
+  "browser": "public/index.html",
   "scripts": {
-    "build": "parcel build ./src/index.html",
-    "start": "parcel serve ./src/index.html"
+    "build:public": "parcel build ./src/index.html",
+    "start:dev": "parcel serve ./src/index.html",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "targets": {
     "browser": {
-      "distDir": "_site"
+      "distDir": "public"
     }
   },
+  "browserslist": ["last 2 Chrome versions"],
   "devDependencies": {
     "@types/pouchdb": "^6.4.0",
     "@types/react": "^16.9.50",
@@ -31,6 +33,9 @@
     "@emotion/styled": "^10.0.27",
     "date-fns": "^2.16.1",
     "emotion-theming": "^10.0.27",
+    "fastify": "^3.7.0",
+    "fastify-http-proxy": "^4.0.4",
+    "fastify-static": "^3.3.0",
     "formik": "^2.1.7",
     "pouchdb": "^7.2.2",
     "pouchdb-authentication": "^1.1.3",

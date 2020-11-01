@@ -9,12 +9,11 @@ export type Day = "M" | "T" | "W" | "Th" | "F" | "Sa" | "Su";
 
 export type Menu = Record<Day, string>;
 
-export const remote = new PouchDB<PouchDB.Core.Document<Menu>>(
-  `${process.env.COUCHDB_URL}/menus`,
-  {
-    skip_setup: true
-  }
-);
+export const remote = new PouchDB.defaults({
+  prefix: "http://localhost:3000/db"
+})<PouchDB.Core.Document<Menu>>(`menus`, {
+  skip_setup: true
+});
 
 export const local = new PouchDB<PouchDB.Core.Document<Menu>>("menus");
 
