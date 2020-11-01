@@ -5,12 +5,11 @@
   "browser": "public/index.html",
   "scripts": {
     "build:public": "parcel build ./src/index.html",
-    "start:dev": "parcel serve ./src/index.html",
-    "start": "node index.js"
+    "start": "parcel serve ./src/index.html"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "targets": {
     "browser": {
       "distDir": "public"
@@ -33,9 +32,6 @@
     "@emotion/styled": "^10.0.27",
     "date-fns": "^2.16.1",
     "emotion-theming": "^10.0.27",
-    "fastify": "^3.7.0",
-    "fastify-http-proxy": "^4.0.4",
-    "fastify-static": "^3.3.0",
     "formik": "^2.1.7",
     "pouchdb": "^7.2.2",
     "pouchdb-authentication": "^1.1.3",

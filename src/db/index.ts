@@ -3,15 +3,17 @@ import PouchDBAuth from "pouchdb-authentication";
 import { useCallback, useState, useEffect } from "react";
 import { SessionError } from "../components/SessionErrorBoundary";
 
-PouchDB.plugin(PouchDBAuth);
+const RemotePouch = PouchDB.defaults({
+  prefix: process.env.COUCHDB_URL
+});
+
+RemotePouch.plugin(PouchDBAuth);
 
 export type Day = "M" | "T" | "W" | "Th" | "F" | "Sa" | "Su";
 
 export type Menu = Record<Day, string>;
 
-export const remote = new PouchDB.defaults({
-  prefix: "https://weekly-menu.hipsterbrown.com/db"
-})<PouchDB.Core.Document<Menu>>(`menus`, {
+export const remote = new RemotePouch<PouchDB.Core.Document<Menu>>(`menus`, {
   skip_setup: true
 });
 
