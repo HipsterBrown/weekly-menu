@@ -10,7 +10,7 @@ export type Day = "M" | "T" | "W" | "Th" | "F" | "Sa" | "Su";
 export type Menu = Record<Day, string>;
 
 export const remote = new PouchDB.defaults({
-  prefix: "http://localhost:3000/db"
+  prefix: "https://weekly-menu.hipsterbrown.com/db"
 })<PouchDB.Core.Document<Menu>>(`menus`, {
   skip_setup: true
 });
