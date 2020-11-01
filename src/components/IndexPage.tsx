@@ -8,7 +8,7 @@ import {
   Text
 } from "@chakra-ui/core";
 import { Link as RouterLink } from "react-router-dom";
-import { format } from "date-fns";
+import { format, addWeeks } from "date-fns";
 import { useQueryDB } from "../db";
 import { getMenuDateFor } from "../utils";
 import SessionErrorBoundary from "./SessionErrorBoundary";
@@ -39,8 +39,10 @@ const MenuLoader: React.FC = () => (
 
 const NotFoundErrorBoundary = createErrorBoundary(<MenuFallback />);
 
-const IndexPage: React.FC = () => {
-  const menuDate = getMenuDateFor();
+const IndexPage: React.FC<{ preview?: boolean }> = ({ preview }) => {
+  const menuDate = getMenuDateFor(
+    preview ? addWeeks(Date.now(), 1) : undefined
+  );
   const currentWeek = format(menuDate, "MMM do");
   const menu = useQueryDB(menuDate.toJSON());
 
@@ -55,9 +57,34 @@ const IndexPage: React.FC = () => {
           <SessionErrorBoundary>
             <Suspense fallback={<MenuLoader />}>
               <Menu menu={menu} />
-              <Link color="teal.500" as={RouterLink} to="/edit" pb="4">
-                Edit
-              </Link>
+              <Text pb="4">
+                {preview || (
+                  <>
+                    <Link color="teal.500" as={RouterLink} to="/edit" pr="3">
+                      Edit
+                    </Link>
+                    |
+                    <Link color="teal.500" as={RouterLink} to="/plan" px="3">
+                      Plan next week
+                    </Link>
+                    |
+                    <Link color="teal.500" as={RouterLink} to="/preview" pl="3">
+                      Preview next week
+                    </Link>
+                  </>
+                )}
+                {preview && (
+                  <>
+                    <Link color="teal.500" as={RouterLink} to="/plan" pr="3">
+                      Plan
+                    </Link>
+                    |
+                    <Link color="teal.500" as={RouterLink} to="/" pl="3">
+                      Return
+                    </Link>
+                  </>
+                )}
+              </Text>
             </Suspense>
           </SessionErrorBoundary>
         </NotFoundErrorBoundary>

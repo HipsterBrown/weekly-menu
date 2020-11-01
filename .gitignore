@@ -3,4 +3,5 @@ dist/
 .parcel-cache/
 .vagrant/
 .env
+.env.production
 _site

@@ -20,8 +20,14 @@ const App: React.FC = () => {
       >
         <Router>
           <Route path="/" exact component={IndexPage} />
+          <Route path="/preview">
+            <IndexPage preview={true} />
+          </Route>
           <Route path="/display-mode" component={DisplayModePage} />
           <Route path="/edit" component={EditPage} />
+          <Route path="/plan">
+            <EditPage planning={true} />
+          </Route>
           <Route path="/login" component={LoginPage} />
         </Router>
       </Box>

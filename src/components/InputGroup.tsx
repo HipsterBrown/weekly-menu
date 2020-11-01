@@ -14,7 +14,12 @@ interface InputGroupProps extends FormControlProps {
   type?: string;
 }
 
-const InputGroup: React.FC<InputGroupProps> = ({ name, label, type = 'text', ...styles }) => {
+const InputGroup: React.FC<InputGroupProps> = ({
+  name,
+  label,
+  type = "text",
+  ...styles
+}) => {
   const [field, { error, touched }] = useField({ name, type });
 
   return (
@@ -22,7 +27,12 @@ const InputGroup: React.FC<InputGroupProps> = ({ name, label, type = 'text', ...
       <FormLabel htmlFor={name} id={`${name}-label`}>
         {label || name}
       </FormLabel>
-      <Input {...field} id={name} aria-labelledby={`${name}-label`} />
+      <Input
+        {...field}
+        type={type}
+        id={name}
+        aria-labelledby={`${name}-label`}
+      />
       <ErrorMessage component={FormErrorMessage} name={name} />
     </FormControl>
   );
