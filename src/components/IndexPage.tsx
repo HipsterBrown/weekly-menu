@@ -16,10 +16,15 @@ import { createErrorBoundary } from "./NotFoundErrorBoundary";
 import NavBar from "./NavBar";
 import Menu from "./Menu";
 
-const MenuFallback: React.FC = () => (
+const MenuFallback: React.FC<{ preview?: boolean }> = () => (
   <>
     <Text>No menu found for this week.</Text>
-    <Link color="teal.500" as={RouterLink} to="/edit" pb="4">
+    <Link
+      color="teal.500"
+      as={RouterLink}
+      to={preview ? "/plan" : "/edit"}
+      pb="4"
+    >
       Add menu items
     </Link>
   </>
@@ -53,7 +58,7 @@ const IndexPage: React.FC<{ preview?: boolean }> = ({ preview }) => {
         <Heading mt="0" mb="4">
           Weekly Menu - {currentWeek}
         </Heading>
-        <NotFoundErrorBoundary>
+        <NotFoundErrorBoundary preview={preview}>
           <SessionErrorBoundary>
             <Suspense fallback={<MenuLoader />}>
               <Menu menu={menu} />

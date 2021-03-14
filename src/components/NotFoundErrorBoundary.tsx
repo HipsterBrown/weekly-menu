@@ -1,7 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, cloneElement } from "react";
 
 export const createErrorBoundary = (component: React.ReactNode) =>
-  class NotFoundErrorBoundary extends Component<{}, { error: Error | null }> {
+  class NotFoundErrorBoundary extends Component<
+    { preview?: boolean },
+    { error: Error | null }
+  > {
     constructor(props) {
       super(props);
       this.state = {
@@ -19,7 +22,7 @@ export const createErrorBoundary = (component: React.ReactNode) =>
     render() {
       const { error } = this.state;
       if (error !== null) {
-        return <>{component}</>;
+        return <>{cloneElement(component, { preview })}</>;
       }
       return this.props.children;
     }
