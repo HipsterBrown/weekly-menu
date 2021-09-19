@@ -8,7 +8,7 @@ export const createErrorBoundary = (component: React.ReactNode) =>
     constructor(props) {
       super(props);
       this.state = {
-        error: null
+        error: null,
       };
     }
 
@@ -22,6 +22,7 @@ export const createErrorBoundary = (component: React.ReactNode) =>
     render() {
       const { error } = this.state;
       if (error !== null) {
+        const { preview } = this.props;
         return <>{cloneElement(component, { preview })}</>;
       }
       return this.props.children;
@@ -35,7 +36,7 @@ class NotFoundErrorBoundary extends Component<
   constructor(props) {
     super(props);
     this.state = {
-      error: null
+      error: null,
     };
   }
 

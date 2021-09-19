@@ -3,8 +3,10 @@ import { useState } from "react";
 import { useLocation } from "react-router";
 import qs from "query-string";
 
-export const getMenuDateFor = (date: Date = new Date()) =>
-  startOfWeek(date.getTime(), { weekStartsOn: 1 });
+export const getMenuDateFor = (
+  date: Date = new Date(),
+  weekStartsOn: Required<Parameters<typeof startOfWeek>>[1]["weekStartsOn"] = 0
+) => startOfWeek(date.getTime(), { weekStartsOn });
 
 export const useQueryParams = <Params = {}>() => {
   const location = useLocation();

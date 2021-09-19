@@ -1,13 +1,5 @@
 import React, { Suspense, useEffect } from "react";
-import {
-  Box,
-  Heading,
-  Link,
-  SimpleGrid,
-  Skeleton,
-  Text
-} from "@chakra-ui/core";
-import { Link as RouterLink } from "react-router-dom";
+import { Box, Heading, SimpleGrid, Skeleton, Text } from "@chakra-ui/core";
 import { format } from "date-fns";
 import { useQueryDB, useSession } from "../db";
 import { getMenuDateFor, useQueryParams } from "../utils";

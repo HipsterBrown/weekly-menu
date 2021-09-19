@@ -5,7 +5,7 @@ import {
   Link,
   SimpleGrid,
   Skeleton,
-  Text
+  Text,
 } from "@chakra-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import { format, addWeeks } from "date-fns";
@@ -16,7 +16,7 @@ import { createErrorBoundary } from "./NotFoundErrorBoundary";
 import NavBar from "./NavBar";
 import Menu from "./Menu";
 
-const MenuFallback: React.FC<{ preview?: boolean }> = () => (
+const MenuFallback: React.FC<{ preview?: boolean }> = ({ preview }) => (
   <>
     <Text>No menu found for this week.</Text>
     <Link
