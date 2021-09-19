@@ -27,13 +27,23 @@ Install dependencies:
 npm install
 ```
 
+Set up CouchDB in one of the follow ways:
+
+- follow the installation instructions in [CouchDB docs](https://docs.couchdb.org/en/stable/install/index.html)
+- use the `Vagrantfile` to spin up a local instance running in virtual machine with `vagrant up` (see [Vagrant docs](https://www.vagrantup.com/))
+- use Docker with the following command:
+
+```
+docker run -d --name weekly-menu-db -p 5984:5984 apache/couchdb:2.3.1
+```
+
+Then go to http://localhost:5984/\_utils#setup to complete the setup process.
+
 Set environment variable for CouchDB instance in `.env` file:
 
 ```
 COUCHDB_URL=http://localhost:5984
 ```
-
-_Site note: follow the installation instructions in [CouchDB docs](https://docs.couchdb.org/en/stable/install/index.html) to set up your local instance, or use the `Vagrantfile` to spin up a local instance running in virtual machine__
 
 Run the Parcel dev server:
 
