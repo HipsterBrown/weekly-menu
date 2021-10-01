@@ -4,7 +4,7 @@ import { useCallback, useState, useEffect } from "react";
 import { SessionError } from "../components/SessionErrorBoundary";
 
 const RemotePouch = PouchDB.defaults({
-  prefix: process.env.COUCHDB_URL
+  prefix: process.env.COUCHDB_URL,
 });
 
 RemotePouch.plugin(PouchDBAuth);
@@ -14,7 +14,7 @@ export type Day = "M" | "T" | "W" | "Th" | "F" | "Sa" | "Su";
 export type Menu = Record<Day, string>;
 
 export const remote = new RemotePouch<PouchDB.Core.Document<Menu>>(`menus`, {
-  skip_setup: true
+  skip_setup: true,
 });
 
 export const local = new PouchDB<PouchDB.Core.Document<Menu>>("menus");
@@ -32,15 +32,15 @@ export const useQueryDB = (id: string) => {
   let result: PouchDB.Core.ExistingDocument<Menu> | Error | null = null;
   const promise = remote
     .getSession()
-    .then(response => {
+    .then((response) => {
       if (response.userCtx.name === null) throw new SessionError();
       return local.get(id);
     })
-    .then(response => {
+    .then((response) => {
       status = "success";
       result = response;
     })
-    .catch(error => {
+    .catch((error) => {
       status = "error";
       result = error;
     });
@@ -61,7 +61,7 @@ export const useQueryDB = (id: string) => {
 export const useSession = () => {
   const [
     session,
-    setSession
+    setSession,
   ] = useState<PouchDB.Authentication.UserContext | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const login = useCallback(
@@ -72,9 +72,9 @@ export const useSession = () => {
           // @ts-ignore
           ajax: {
             headers: {
-              Authorization: `Basic ${btoa(username + ":" + password)}`
-            }
-          }
+              Authorization: `Basic ${btoa(username + ":" + password)}`,
+            },
+          },
         });
         setSession({ name, roles });
       } catch (error) {
@@ -100,7 +100,7 @@ export const useSession = () => {
   useEffect(() => {
     remote
       .getSession()
-      .then(response => {
+      .then((response) => {
         setSession(response.userCtx);
       })
       .finally(() => {
@@ -111,4 +111,4 @@ export const useSession = () => {
   return { loading, login, logout, session };
 };
 
-export const DAYS: Day[] = ["M", "T", "W", "Th", "F", "Sa", "Su"];
+export const DAYS: Day[] = ["Su", "M", "T", "W", "Th", "F", "Sa"];
