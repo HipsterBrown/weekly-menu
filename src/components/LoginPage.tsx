@@ -30,38 +30,38 @@ const LoginPage: React.FC = () => {
 
   return (
     <SimpleGrid spacingY="3" maxWidth="600px" mx="auto" p="3">
-      <Heading>Login Page</Heading>
+      <Heading>Login</Heading>
       {session?.name ? (
         <>
           <Text as="p">Welcome {session.name}</Text>
           <Text as="p">Redirecting to home...</Text>
         </>
       ) : (
-        <Formik<LoginValues>
-          initialValues={{ username: "", password: "" }}
-          validationSchema={LoginSchema}
-          validateOnBlur={false}
-          validateOnChange={false}
-          onSubmit={loginAndGoHome}
-        >
-          <Form>
-            <SimpleGrid spacingY="3">
-              <InputGroup name="username" label="Username" />
-              <InputGroup name="password" label="Password" type="password" />
-              <Button
-                type="submit"
-                variantColor="pink"
-                width="100%"
-                maxWidth={[null, "10rem"]}
-                isDisabled={loading}
-                isLoading={loading}
-              >
-                Save
+          <Formik<LoginValues>
+            initialValues={{ username: "", password: "" }}
+            validationSchema={LoginSchema}
+            validateOnBlur={false}
+            validateOnChange={false}
+            onSubmit={loginAndGoHome}
+          >
+            <Form>
+              <SimpleGrid spacingY="3">
+                <InputGroup name="username" label="Username" />
+                <InputGroup name="password" label="Password" type="password" />
+                <Button
+                  type="submit"
+                  variantColor="pink"
+                  width="100%"
+                  maxWidth={[null, "10rem"]}
+                  isDisabled={loading}
+                  isLoading={loading}
+                >
+                  Save
               </Button>
-            </SimpleGrid>
-          </Form>
-        </Formik>
-      )}
+              </SimpleGrid>
+            </Form>
+          </Formik>
+        )}
     </SimpleGrid>
   );
 };
