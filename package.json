@@ -2,7 +2,7 @@
   "name": "weekly-menu",
   "version": "1.0.0",
   "description": "",
-  "source": "src/index.html",
+  "source": "index.html",
   "scripts": {
     "build:public": "parcel build",
     "start": "parcel"
@@ -11,7 +11,7 @@
   "author": "",
   "license": "AGPL-3.0",
   "targets": {
-    "browser": {
+    "default": {
       "distDir": "public"
     }
   },
