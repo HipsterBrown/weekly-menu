@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from "react";
-import { Box, Heading, SimpleGrid, Skeleton, Text } from "@chakra-ui/core";
+import { Box, Heading, SimpleGrid, Skeleton, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { useQueryDB, useSession } from "../db";
 import { getMenuDateFor, useQueryParams } from "../utils";

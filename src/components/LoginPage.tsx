@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Heading, SimpleGrid, Text } from "@chakra-ui/core";
+import { Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router";
@@ -13,7 +13,7 @@ type LoginValues = {
 
 const LoginSchema = Yup.object({
   username: Yup.string().required(),
-  password: Yup.string().required()
+  password: Yup.string().required(),
 });
 
 const LoginPage: React.FC = () => {
@@ -37,31 +37,31 @@ const LoginPage: React.FC = () => {
           <Text as="p">Redirecting to home...</Text>
         </>
       ) : (
-          <Formik<LoginValues>
-            initialValues={{ username: "", password: "" }}
-            validationSchema={LoginSchema}
-            validateOnBlur={false}
-            validateOnChange={false}
-            onSubmit={loginAndGoHome}
-          >
-            <Form>
-              <SimpleGrid spacingY="3">
-                <InputGroup name="username" label="Username" />
-                <InputGroup name="password" label="Password" type="password" />
-                <Button
-                  type="submit"
-                  variantColor="pink"
-                  width="100%"
-                  maxWidth={[null, "10rem"]}
-                  isDisabled={loading}
-                  isLoading={loading}
-                >
-                  Save
+        <Formik<LoginValues>
+          initialValues={{ username: "", password: "" }}
+          validationSchema={LoginSchema}
+          validateOnBlur={false}
+          validateOnChange={false}
+          onSubmit={loginAndGoHome}
+        >
+          <Form>
+            <SimpleGrid spacingY="3">
+              <InputGroup name="username" label="Username" />
+              <InputGroup name="password" label="Password" type="password" />
+              <Button
+                type="submit"
+                variantColor="pink"
+                width="100%"
+                maxWidth={[null, "10rem"]}
+                isDisabled={loading}
+                isLoading={loading}
+              >
+                Save
               </Button>
-              </SimpleGrid>
-            </Form>
-          </Formik>
-        )}
+            </SimpleGrid>
+          </Form>
+        </Formik>
+      )}
     </SimpleGrid>
   );
 };

@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Box, Heading, Spinner } from "@chakra-ui/core";
+import { Box, Heading, Spinner } from "@chakra-ui/react";
 import { format, addWeeks } from "date-fns";
 import { useHistory } from "react-router";
 import { local, useQueryDB, Menu, MenuResource } from "../db";
@@ -16,7 +16,7 @@ const BLANK_MENU: Menu = {
   Th: "",
   F: "",
   Sa: "",
-  Su: ""
+  Su: "",
 };
 
 const useMenuUpdate = (menuDate: string, returnToPath: string = "/") => {
@@ -38,7 +38,7 @@ const FallbackForm: React.FC<{
   const blankMenuResource = {
     read() {
       return BLANK_MENU as ReturnType<MenuResource["read"]>;
-    }
+    },
   };
   return <MenuForm menu={blankMenuResource} onSubmit={onSubmit} />;
 };

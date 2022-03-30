@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, Link } from "@chakra-ui/core";
+import { Text, Link } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 
 export class SessionError extends Error {
@@ -14,7 +14,7 @@ class SessionErrorBoundary extends Component<
   constructor(props: {}) {
     super(props);
     this.state = {
-      sessionError: null
+      sessionError: null,
     };
   }
 

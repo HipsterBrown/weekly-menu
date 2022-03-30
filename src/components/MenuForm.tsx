@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, SimpleGrid } from "@chakra-ui/core";
+import { Button, SimpleGrid } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { Menu, MenuResource, DAYS } from "../db";
@@ -9,7 +9,7 @@ const FormSchema = Yup.object(
   DAYS.reduce(
     (result, day) => ({
       ...result,
-      [day]: Yup.string().required("This field is required").max(100)
+      [day]: Yup.string().required("This field is required").max(100),
     }),
     {}
   )
@@ -25,17 +25,17 @@ const MenuForm: React.FC<{
     <Formik
       initialValues={doc}
       enableReinitialize
-      onSubmit={values => onSubmit(values, doc)}
+      onSubmit={(values) => onSubmit(values, doc)}
       validationSchema={FormSchema}
     >
       <Form>
         <SimpleGrid spacingY="3">
-          {DAYS.map(day => (
+          {DAYS.map((day) => (
             <InputGroup key={day} name={day} mb="2" />
           ))}
           <Button
             type="submit"
-            variantColor="pink"
+            colorScheme="pink"
             width="100%"
             maxWidth={[null, "10rem"]}
             mb="3"

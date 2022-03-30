@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Link, Button, Spinner } from "@chakra-ui/core";
+import { Flex, Link, Button, Spinner } from "@chakra-ui/react";
 import { useHistory } from "react-router";
 import { Link as RouterLink } from "react-router-dom";
 import { useSession } from "../db";

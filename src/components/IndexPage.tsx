@@ -6,7 +6,7 @@ import {
   SimpleGrid,
   Skeleton,
   Text,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { format, addWeeks } from "date-fns";
 import { useQueryDB } from "../db";

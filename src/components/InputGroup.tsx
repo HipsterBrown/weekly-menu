@@ -4,8 +4,8 @@ import {
   FormControlProps,
   FormErrorMessage,
   FormLabel,
-  Input
-} from "@chakra-ui/core";
+  Input,
+} from "@chakra-ui/react";
 import { useField, ErrorMessage } from "formik";
 
 interface InputGroupProps extends FormControlProps {
