@@ -1,11 +1,12 @@
 import React from "react";
 import { ChakraProvider, Box } from "@chakra-ui/react";
-import { Route } from "react-router";
+import { Route, Routes } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import IndexPage from "./IndexPage";
 import EditPage from "./EditPage";
 import LoginPage from "./LoginPage";
 import DisplayModePage from "./DisplayModePage";
+import AppLayout from "./AppLayout";
 
 const App: React.FC = () => {
   return (
@@ -18,16 +19,16 @@ const App: React.FC = () => {
         overflow="scroll"
       >
         <Router>
-          <Route path="/" exact component={IndexPage} />
-          <Route path="/preview">
-            <IndexPage preview={true} />
-          </Route>
-          <Route path="/display-mode" component={DisplayModePage} />
-          <Route path="/edit" component={EditPage} />
-          <Route path="/plan">
-            <EditPage planning={true} />
-          </Route>
-          <Route path="/login" component={LoginPage} />
+          <Routes>
+            <Route path="/" element={<AppLayout />}>
+              <Route index element={<IndexPage />} />
+              <Route path="/preview" element={<IndexPage preview={true} />} />
+              <Route path="/edit" element={<EditPage />} />
+              <Route path="/plan" element={<EditPage planning={true} />} />
+            </Route>
+            <Route path="/display-mode" element={<DisplayModePage />} />
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
         </Router>
       </Box>
     </ChakraProvider>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { useSession } from "../db";
 import InputGroup from "./InputGroup";
 
@@ -17,7 +17,7 @@ const LoginSchema = Yup.object({
 });
 
 const LoginPage: React.FC = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { session, loading, login } = useSession();
 
   const loginAndGoHome = async ({ username, password }: LoginValues) => {
@@ -25,7 +25,7 @@ const LoginPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (session?.name) history.push("/");
+    if (session?.name) navigate("/");
   }, [session?.name]);
 
   return (
@@ -50,7 +50,7 @@ const LoginPage: React.FC = () => {
               <InputGroup name="password" label="Password" type="password" />
               <Button
                 type="submit"
-                variantColor="pink"
+                colorScheme="pink"
                 width="100%"
                 maxWidth={[null, "10rem"]}
                 isDisabled={loading}

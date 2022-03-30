@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Box, Heading, Spinner } from "@chakra-ui/react";
 import { format, addWeeks } from "date-fns";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { local, useQueryDB, Menu, MenuResource } from "../db";
 import { getMenuDateFor } from "../utils";
 import SessionErrorBoundary from "./SessionErrorBoundary";
@@ -20,14 +20,14 @@ const BLANK_MENU: Menu = {
 };
 
 const useMenuUpdate = (menuDate: string, returnToPath: string = "/") => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const onSubmit = async (
     values: Menu,
     doc: ReturnType<MenuResource["read"]>
   ) => {
     await local.put({ _id: menuDate, ...doc, ...values });
     console.log({ returnToPath });
-    history.push(returnToPath);
+    navigate(returnToPath);
   };
   return onSubmit;
 };
@@ -55,21 +55,18 @@ const EditPage: React.FC<{ planning?: boolean }> = ({ planning }) => {
   );
 
   return (
-    <>
-      <NavBar />
-      <Box mx="auto" maxWidth="500px" p="3">
-        <Heading mt="0" mb="4">
-          Edit Weekly Menu - {currentWeek}
-        </Heading>
-        <NotFoundErrorBoundary fallback={<FallbackForm onSubmit={onSubmit} />}>
-          <SessionErrorBoundary>
-            <Suspense fallback={<Spinner size="lg" />}>
-              <MenuForm menu={menu} onSubmit={onSubmit} />
-            </Suspense>
-          </SessionErrorBoundary>
-        </NotFoundErrorBoundary>
-      </Box>
-    </>
+    <Box mx="auto" maxWidth="500px" p="3">
+      <Heading mt="0" mb="4">
+        Edit Weekly Menu - {currentWeek}
+      </Heading>
+      <NotFoundErrorBoundary fallback={<FallbackForm onSubmit={onSubmit} />}>
+        <SessionErrorBoundary>
+          <Suspense fallback={<Spinner size="lg" />}>
+            <MenuForm menu={menu} onSubmit={onSubmit} />
+          </Suspense>
+        </SessionErrorBoundary>
+      </NotFoundErrorBoundary>
+    </Box>
   );
 };
 

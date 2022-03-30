@@ -52,49 +52,46 @@ const IndexPage: React.FC<{ preview?: boolean }> = ({ preview }) => {
   const menu = useQueryDB(menuDate.toJSON());
 
   return (
-    <>
-      <NavBar />
-      <Box p="3">
-        <Heading mt="0" mb="4">
-          Weekly Menu - {currentWeek}
-        </Heading>
-        <NotFoundErrorBoundary preview={preview}>
-          <SessionErrorBoundary>
-            <Suspense fallback={<MenuLoader />}>
-              <Menu menu={menu} />
-              <Text pb="4">
-                {preview || (
-                  <>
-                    <Link color="teal.500" as={RouterLink} to="/edit" pr="3">
-                      Edit
-                    </Link>
-                    |
-                    <Link color="teal.500" as={RouterLink} to="/plan" px="3">
-                      Plan next week
-                    </Link>
-                    |
-                    <Link color="teal.500" as={RouterLink} to="/preview" pl="3">
-                      Preview next week
-                    </Link>
-                  </>
-                )}
-                {preview && (
-                  <>
-                    <Link color="teal.500" as={RouterLink} to="/plan" pr="3">
-                      Plan
-                    </Link>
-                    |
-                    <Link color="teal.500" as={RouterLink} to="/" pl="3">
-                      Return
-                    </Link>
-                  </>
-                )}
-              </Text>
-            </Suspense>
-          </SessionErrorBoundary>
-        </NotFoundErrorBoundary>
-      </Box>
-    </>
+    <Box p="3">
+      <Heading mt="0" mb="4">
+        Weekly Menu - {currentWeek}
+      </Heading>
+      <NotFoundErrorBoundary preview={preview}>
+        <SessionErrorBoundary>
+          <Suspense fallback={<MenuLoader />}>
+            <Menu menu={menu} />
+            <Text pb="4">
+              {preview || (
+                <>
+                  <Link color="teal.500" as={RouterLink} to="/edit" pr="3">
+                    Edit
+                  </Link>
+                  |
+                  <Link color="teal.500" as={RouterLink} to="/plan" px="3">
+                    Plan next week
+                  </Link>
+                  |
+                  <Link color="teal.500" as={RouterLink} to="/preview" pl="3">
+                    Preview next week
+                  </Link>
+                </>
+              )}
+              {preview && (
+                <>
+                  <Link color="teal.500" as={RouterLink} to="/plan" pr="3">
+                    Plan
+                  </Link>
+                  |
+                  <Link color="teal.500" as={RouterLink} to="/" pl="3">
+                    Return
+                  </Link>
+                </>
+              )}
+            </Text>
+          </Suspense>
+        </SessionErrorBoundary>
+      </NotFoundErrorBoundary>
+    </Box>
   );
 };
 
