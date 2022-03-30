@@ -1,12 +1,17 @@
-import React from "react";
-import { ChakraProvider, Box } from "@chakra-ui/react";
+import React, { Suspense } from "react";
+import { ChakraProvider, Box, Spinner } from "@chakra-ui/react";
 import { Route, Routes } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
-import IndexPage from "./IndexPage";
-import EditPage from "./EditPage";
-import LoginPage from "./LoginPage";
-import DisplayModePage from "./DisplayModePage";
 import AppLayout from "./AppLayout";
+
+const IndexPage = React.lazy(() => import("./IndexPage"));
+const EditPage = React.lazy(() => import("./EditPage"));
+const DisplayModePage = React.lazy(() => import("./DisplayModePage"));
+const LoginPage = React.lazy(() => import("./LoginPage"));
+
+const PageLoader: React.FC = ({ children }) => (
+  <Suspense fallback={<Spinner label="Loading page" />}>{children}</Suspense>
+);
 
 const App: React.FC = () => {
   return (
@@ -21,13 +26,55 @@ const App: React.FC = () => {
         <Router>
           <Routes>
             <Route path="/" element={<AppLayout />}>
-              <Route index element={<IndexPage />} />
-              <Route path="/preview" element={<IndexPage preview={true} />} />
-              <Route path="/edit" element={<EditPage />} />
-              <Route path="/plan" element={<EditPage planning={true} />} />
+              <Route
+                index
+                element={
+                  <PageLoader>
+                    <IndexPage />
+                  </PageLoader>
+                }
+              />
+              <Route
+                path="preview"
+                element={
+                  <PageLoader>
+                    <IndexPage preview={true} />
+                  </PageLoader>
+                }
+              />
+              <Route
+                path="edit"
+                element={
+                  <PageLoader>
+                    <EditPage />
+                  </PageLoader>
+                }
+              />
+              <Route
+                path="plan"
+                element={
+                  <PageLoader>
+                    <EditPage planning={true} />
+                  </PageLoader>
+                }
+              />
             </Route>
-            <Route path="/display-mode" element={<DisplayModePage />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/display-mode"
+              element={
+                <PageLoader>
+                  <DisplayModePage />
+                </PageLoader>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <PageLoader>
+                  <LoginPage />
+                </PageLoader>
+              }
+            />
           </Routes>
         </Router>
       </Box>
