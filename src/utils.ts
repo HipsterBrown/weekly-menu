@@ -10,7 +10,7 @@ export const getMenuDateFor = (
 
 export const useQueryParams = <Params = {}>() => {
   const location = useLocation();
-  // @ts-ignore
+  // @ts-expect-error
   return useState(() =>
     qs.parse(location.search, { parseBooleans: true, parseNumbers: true })
   )[0] as Partial<Params>;
