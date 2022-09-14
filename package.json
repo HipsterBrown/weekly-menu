@@ -20,9 +20,8 @@
   ],
   "devDependencies": {
     "@types/pouchdb": "^6.4.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/yup": "^0.29.7",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "events": "^3.3.0",
     "parcel": "^2.0.0",
     "process": "^0.11.10",
@@ -33,7 +32,6 @@
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
     "date-fns": "^2.16.1",
-    "formik": "^2.1.7",
     "framer-motion": "^6.2.8",
     "pouchdb": "^7.2.2",
     "pouchdb-authentication": "^1.1.3",
@@ -41,7 +39,6 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router": "^6.2.2",
-    "react-router-dom": "^6.2.2",
-    "yup": "^0.32.11"
+    "react-router-dom": "^6.2.2"
   }
 }

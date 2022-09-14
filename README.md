@@ -9,7 +9,6 @@ Built with:
 - [React](https://reactjs.org/)
 - [React Router](https://reactrouter.com/)
 - [Chakra UI](https://chakra-ui.com/)
-- [Formik](https://formik.org/)
 - [date-fns](https://date-fns.org/)
 - [Parcel](https://parceljs.org/)
 
@@ -17,7 +16,7 @@ Hosted on my internal platform using [Dokku](http://dokku.viewdocs.io/dokku/).
 
 ## Architecture
 
-This project was motivated by wanting to experiment with ["jamstack"](https://jamstack.org/) style using self-hosted services. React and the associated libraries (React Router, Chakra UI, and Formik) were used because I'm very familiar with them and can build fairly quickly. The only area of experimentation on the view layer was with newer [Suspense for Data Fetching](https://reactjs.org/docs/concurrent-mode-suspense.html) patterns. PouchDB and CouchDB was the main focus for this project, as the core data layer with offline storage, syncing, and authentication support. Parcel is used as the dev server and bundler to avoid mucking around with configuration and just get straight to building.
+This project was motivated by wanting to experiment with ["jamstack"](https://jamstack.org/) style using self-hosted services. React and the associated libraries (React Router, Chakra UI) were used because I'm very familiar with them and can build fairly quickly. The only area of experimentation on the view layer was with newer [Suspense for Data Fetching](https://reactjs.org/docs/concurrent-mode-suspense.html) patterns. PouchDB and CouchDB was the main focus for this project, as the core data layer with offline storage, syncing, and authentication support. Parcel is used as the dev server and bundler to avoid mucking around with configuration and just get straight to building.
 
 ## Development
 
