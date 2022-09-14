@@ -1,7 +1,5 @@
 import PouchDB from "pouchdb";
 import PouchDBAuth from "pouchdb-authentication";
-import { useCallback, useState, useEffect } from "react";
-import { SessionError } from "../components/SessionErrorBoundary";
 
 const RemotePouch = PouchDB.defaults({
   prefix: process.env.COUCHDB_URL,
@@ -27,88 +25,42 @@ export type MenuResource = {
   read(): PouchDB.Core.ExistingDocument<Menu>;
 };
 
-export const useQueryDB = (id: string) => {
-  let status: "pending" | "error" | "success" = "pending";
-  let result: PouchDB.Core.ExistingDocument<Menu> | Error | null = null;
-  const promise = remote
-    .getSession()
-    .then((response) => {
-      if (response.userCtx.name === null) throw new SessionError();
-      return local.get(id);
-    })
-    .then((response) => {
-      status = "success";
-      result = response;
-    })
-    .catch((error) => {
-      status = "error";
-      result = error;
-    });
-  const read = (): PouchDB.Core.ExistingDocument<Menu> => {
-    switch (status) {
-      case "pending":
-        throw promise;
-      case "error":
-        throw result;
-      case "success": {
-        if (!(result instanceof Error) && result?._id) return result;
-      }
-    }
-  };
-  return { read };
+export const getSession = async () => {
+  const { userCtx } = await remote.getSession();
+  if (userCtx.name === null) {
+    throw new Response("Must be logged in to continue", { status: 401 });
+  }
+  return userCtx;
 };
 
-export const useSession = () => {
-  const [
-    session,
-    setSession,
-  ] = useState<PouchDB.Authentication.UserContext | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const login = useCallback(
-    async (username: string, password: string) => {
-      try {
-        setLoading(true);
-        const { name, roles } = await remote.logIn(username, password, {
-          // @ts-ignore
-          ajax: {
-            headers: {
-              Authorization: `Basic ${btoa(username + ":" + password)}`,
-            },
-          },
-        });
-        setSession({ name, roles });
-      } catch (error) {
-        console.log({ error });
-      } finally {
-        setLoading(false);
-      }
-    },
-    [remote]
-  );
-
-  const logout = useCallback(async () => {
-    try {
-      setLoading(true);
-      await remote.logOut();
-    } catch (error) {
-      console.log({ error });
-    } finally {
-      setLoading(false);
+export const getMenu = async (id: string) => {
+  try {
+    return await local.get(id);
+  } catch (error) {
+    if (error instanceof Error && error.name === "not_found") {
+      throw new Response(`Unable to find menu for id: ${id}`, { status: 404 });
     }
-  }, [remote]);
+    throw error;
+  }
+};
 
-  useEffect(() => {
-    remote
-      .getSession()
-      .then((response) => {
-        setSession(response.userCtx);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+export const login = async (username: string, password: string) => {
+  await remote.logIn(username, password, {
+    // @ts-ignore
+    ajax: {
+      headers: {
+        Authorization: `Basic ${btoa(username + ":" + password)}`,
+      },
+    },
+  });
+};
 
-  return { loading, login, logout, session };
+export const logout = async () => {
+  try {
+    await remote.logOut();
+  } catch (error) {
+    console.warn(error);
+  }
 };
 
 export const DAYS: Day[] = ["Su", "M", "T", "W", "Th", "F", "Sa"];

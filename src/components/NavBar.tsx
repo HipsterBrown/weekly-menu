@@ -1,17 +1,10 @@
 import React from "react";
-import { Flex, Link, Button, Spinner } from "@chakra-ui/react";
-import { useNavigate } from "react-router";
-import { Link as RouterLink } from "react-router-dom";
-import { useSession } from "../db";
+import { Flex, Link, Button } from "@chakra-ui/react";
+import { useLoaderData } from "react-router";
+import { Form, Link as RouterLink } from "react-router-dom";
 
 const NavBar: React.FC = () => {
-  const navigate = useNavigate();
-  const { loading, logout, session } = useSession();
-
-  const logoutWithRedirect = async () => {
-    await logout();
-    navigate("/login");
-  };
+  const session = useLoaderData() as PouchDB.Authentication.UserContext | null;
 
   return (
     <Flex
@@ -22,13 +15,14 @@ const NavBar: React.FC = () => {
       px="2"
       py="3"
     >
-      {loading && <Spinner size="md" />}
       {session?.name && (
-        <Button onClick={logoutWithRedirect} variant="link" color="white">
-          Logout
-        </Button>
+        <Form method="delete" action="/logout">
+          <Button type="submit" variant="link" color="white">
+            Logout
+          </Button>
+        </Form>
       )}
-      {!loading && !session?.name && (
+      {!session?.name && (
         <Link color="white" to="/login" as={RouterLink}>
           Login
         </Link>

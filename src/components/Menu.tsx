@@ -1,11 +1,11 @@
 /// <reference types="pouchdb" />
 import React from "react";
 import { List, ListItem, Grid, Text } from "@chakra-ui/react";
-import { DAYS, MenuResource } from "../db";
+import { DAYS, Menu as MenuRecord } from "../db";
 
-const MenuList: React.FC<{ menu: MenuResource }> = ({ menu }) => {
-  const data = menu.read();
-
+const MenuList: React.FC<{
+  menu: PouchDB.Core.ExistingDocument<MenuRecord>;
+}> = ({ menu }) => {
   return (
     <List spacing="4" px="0" mb="3">
       {DAYS.map((day) => (
@@ -14,7 +14,7 @@ const MenuList: React.FC<{ menu: MenuResource }> = ({ menu }) => {
             <Text as="span" fontWeight="bold">
               {day}:
             </Text>
-            {data[day]}
+            {menu[day]}
           </Grid>
         </ListItem>
       ))}

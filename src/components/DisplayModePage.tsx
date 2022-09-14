@@ -1,60 +1,40 @@
-import React, { Suspense, useEffect } from "react";
-import { Box, Heading, SimpleGrid, Skeleton, Text } from "@chakra-ui/react";
+import React from "react";
+import { Box, Heading } from "@chakra-ui/react";
 import { format } from "date-fns";
-import { useQueryDB, useSession } from "../db";
-import { getMenuDateFor, useQueryParams } from "../utils";
-import SessionErrorBoundary from "./SessionErrorBoundary";
-import { createErrorBoundary } from "./NotFoundErrorBoundary";
+import { getMenu, login, Menu as MenuRecord } from "../db";
+import { getMenuDateFor } from "../utils";
 import Menu from "./Menu";
+import { json, LoaderFunction, useLoaderData } from "react-router";
 
-const MenuFallback: React.FC = () => (
-  <Text>
-    No menu found for this week. Please add menu items on a different device.
-  </Text>
-);
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const username = url.searchParams.get("username");
+  const password = url.searchParams.get("password");
 
-const MenuLoader: React.FC = () => (
-  <SimpleGrid spacingY="3" maxWidth="300px">
-    <Skeleton height="30px" />
-    <Skeleton height="30px" />
-    <Skeleton height="30px" />
-    <Skeleton height="30px" />
-    <Skeleton height="30px" />
-    <Skeleton height="30px" />
-    <Skeleton height="30px" />
-  </SimpleGrid>
-);
+  if (!username || !password) {
+    throw new Response("Must be authenticated to continue", { status: 401 });
+  }
 
-const NotFoundErrorBoundary = createErrorBoundary(<MenuFallback />);
+  await login(username, password);
+
+  const menuDate = getMenuDateFor();
+  const menu = await getMenu(menuDate.toJSON());
+  return json({ menuDate, menu });
+};
 
 const DisplayModePage: React.FC = () => {
-  const menuDate = getMenuDateFor();
-  const currentWeek = format(menuDate, "MMM do");
-  const menu = useQueryDB(menuDate.toJSON());
-  const { username, password } = useQueryParams<{
-    username: string;
-    password: string;
-  }>();
-  const { session, login } = useSession();
-
-  useEffect(() => {
-    if (username && password) {
-      login(username, password);
-    }
-  }, [username, password]);
+  const { menuDate, menu } = useLoaderData() as {
+    menuDate: string;
+    menu: PouchDB.Core.ExistingDocument<MenuRecord>;
+  };
+  const currentWeek = format(new Date(menuDate), "MMM do");
 
   return (
     <Box p="3">
       <Heading mt="0" mb="4">
         Weekly Menu - {currentWeek}
       </Heading>
-      <NotFoundErrorBoundary key={session?.name}>
-        <SessionErrorBoundary>
-          <Suspense fallback={<MenuLoader />}>
-            <Menu menu={menu} />
-          </Suspense>
-        </SessionErrorBoundary>
-      </NotFoundErrorBoundary>
+      <Menu menu={menu} />
     </Box>
   );
 };

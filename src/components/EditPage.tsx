@@ -1,12 +1,15 @@
-import React, { Suspense } from "react";
-import { Box, Heading, Spinner } from "@chakra-ui/react";
+import React from "react";
+import { Box, Heading } from "@chakra-ui/react";
 import { format, addWeeks } from "date-fns";
-import { useNavigate } from "react-router";
-import { local, useQueryDB, Menu, MenuResource } from "../db";
+import {
+  ActionFunction,
+  json,
+  LoaderFunction,
+  redirect,
+  useLoaderData,
+} from "react-router";
+import { local, Menu, getSession, getMenu, Menu as MenuRecord } from "../db";
 import { getMenuDateFor } from "../utils";
-import SessionErrorBoundary from "./SessionErrorBoundary";
-import NotFoundErrorBoundary from "./NotFoundErrorBoundary";
-import NavBar from "./NavBar";
 import MenuForm from "./MenuForm";
 
 const BLANK_MENU: Menu = {
@@ -19,53 +22,60 @@ const BLANK_MENU: Menu = {
   Su: "",
 };
 
-const useMenuUpdate = (menuDate: string, returnToPath: string = "/") => {
-  const navigate = useNavigate();
-  const onSubmit = async (
-    values: Menu,
-    doc: ReturnType<MenuResource["read"]>
-  ) => {
-    await local.put({ _id: menuDate, ...doc, ...values });
-    console.log({ returnToPath });
-    navigate(returnToPath);
-  };
-  return onSubmit;
-};
+export const loader: LoaderFunction = async ({ request }) => {
+  await getSession();
 
-const FallbackForm: React.FC<{
-  onSubmit: ReturnType<typeof useMenuUpdate>;
-}> = ({ onSubmit }) => {
-  const blankMenuResource = {
-    read() {
-      return BLANK_MENU as ReturnType<MenuResource["read"]>;
-    },
-  };
-  return <MenuForm menu={blankMenuResource} onSubmit={onSubmit} />;
-};
+  const url = new URL(request.url);
+  const isPlanning = url.pathname.includes("plan");
 
-const EditPage: React.FC<{ planning?: boolean }> = ({ planning }) => {
   const menuDate = getMenuDateFor(
-    planning ? addWeeks(Date.now(), 1) : undefined
+    isPlanning ? addWeeks(Date.now(), 1) : undefined
   );
-  const currentWeek = format(menuDate, "MMM do");
-  const menu = useQueryDB(menuDate.toJSON());
-  const onSubmit = useMenuUpdate(
-    menuDate.toJSON(),
-    planning ? "/preview" : "/"
-  );
+  try {
+    const menu = await getMenu(menuDate.toJSON());
+    return json({ menuDate, menu });
+  } catch (error) {
+    if (error instanceof Response && error.status === 404) {
+      return json({
+        menuDate,
+        menu: { ...BLANK_MENU, _id: menuDate.toJSON() },
+      });
+    }
+    throw error;
+  }
+};
+
+export const action: ActionFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const formData = Object.fromEntries(await request.formData());
+  console.log({ formData });
+  try {
+    await local.put(
+      (formData as unknown) as PouchDB.Core.PutDocument<
+        Menu & PouchDB.Core.IdMeta & PouchDB.Core.ExistingDocument<Menu>
+      >
+    );
+    return redirect(url.pathname.includes("plan") ? "/preview" : "/");
+  } catch (error) {
+    console.warn(error);
+    return json(null);
+  }
+};
+
+const EditPage: React.FC<{ planning?: boolean }> = () => {
+  const { menuDate, menu } = useLoaderData() as {
+    menuDate: string;
+    menu: PouchDB.Core.ExistingDocument<MenuRecord>;
+  };
+  const currentWeek = format(new Date(menuDate), "MMM do");
+  console.log("EditPage", { menu });
 
   return (
     <Box mx="auto" maxWidth="500px" p="3">
       <Heading mt="0" mb="4">
         Edit Weekly Menu - {currentWeek}
       </Heading>
-      <NotFoundErrorBoundary fallback={<FallbackForm onSubmit={onSubmit} />}>
-        <SessionErrorBoundary>
-          <Suspense fallback={<Spinner size="lg" />}>
-            <MenuForm menu={menu} onSubmit={onSubmit} />
-          </Suspense>
-        </SessionErrorBoundary>
-      </NotFoundErrorBoundary>
+      <MenuForm menu={menu} />
     </Box>
   );
 };

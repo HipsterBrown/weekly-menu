@@ -6,6 +6,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "lib": [
+      "DOM.Iterable",
       "dom",
       "esnext"
     ],

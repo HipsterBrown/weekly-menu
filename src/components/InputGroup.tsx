@@ -2,38 +2,38 @@ import React from "react";
 import {
   FormControl,
   FormControlProps,
-  FormErrorMessage,
   FormLabel,
   Input,
 } from "@chakra-ui/react";
-import { useField, ErrorMessage } from "formik";
 
 interface InputGroupProps extends FormControlProps {
   name: string;
   label?: string;
   type?: string;
+  validations?: Record<string, unknown>;
 }
 
 const InputGroup: React.FC<InputGroupProps> = ({
   name,
   label,
   type = "text",
+  defaultValue,
+  validations = {},
   ...styles
 }) => {
-  const [field, { error, touched }] = useField({ name, type });
-
   return (
-    <FormControl isInvalid={!!error && touched} {...styles}>
+    <FormControl {...styles}>
       <FormLabel htmlFor={name} id={`${name}-label`}>
         {label || name}
       </FormLabel>
       <Input
-        {...field}
+        defaultValue={defaultValue}
         type={type}
         id={name}
+        name={name}
         aria-labelledby={`${name}-label`}
+        {...validations}
       />
-      <ErrorMessage component={FormErrorMessage} name={name} />
     </FormControl>
   );
 };
